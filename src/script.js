@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelector('.newsletter-form').addEventListener('submit', event => {
     event.preventDefault();
     const message = document.querySelector('.form-message');
-    message.textContent = 'Thank you — you’re on the list.';
+    message.textContent = 'Thank you â€” youâ€™re on the list.';
     event.currentTarget.reset();
   });
 });
