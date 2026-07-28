@@ -12,6 +12,11 @@ dist
 .env
 dist-ssr
 *.local
+.npm-cache
+.vercel-data
+.vercel-local
+.vercel-roaming
+.vercel
 
 # Editor directories and files
 .vscode/*
@@ -23,3 +28,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+.vercel
