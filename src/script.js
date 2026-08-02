@@ -21,7 +21,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!disclosure || disclosure.hidden) return;
     disclosure.hidden = true;
     document.body.classList.remove('modal-open');
-    lastFocusedElement?.focus();
+    if (window.location.hash) history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    const topLink = document.querySelector('.site-header .brand');
+    if (topLink) topLink.focus({ preventScroll: true });
+    else lastFocusedElement?.focus({ preventScroll: true });
   };
   const openDisclosure = () => {
     if (!disclosure || !disclosure.hidden) return;
