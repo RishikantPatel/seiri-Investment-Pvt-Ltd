@@ -13,6 +13,29 @@ document.addEventListener('DOMContentLoaded', () => {
   setTheme(savedTheme || 'dark');
   themeToggle.addEventListener('click', () => setTheme(document.body.classList.contains('light-mode') ? 'dark' : 'light'));
 
+  const disclosure = document.querySelector('.disclosure-modal');
+  const disclosurePanel = disclosure?.querySelector('.disclosure-modal__panel');
+  const disclosureClosers = disclosure?.querySelectorAll('[data-disclosure-close]');
+  let lastFocusedElement;
+  const closeDisclosure = () => {
+    if (!disclosure || disclosure.hidden) return;
+    disclosure.hidden = true;
+    document.body.classList.remove('modal-open');
+    lastFocusedElement?.focus();
+  };
+  const openDisclosure = () => {
+    if (!disclosure || !disclosure.hidden) return;
+    lastFocusedElement = document.activeElement;
+    disclosure.hidden = false;
+    document.body.classList.add('modal-open');
+    disclosurePanel?.focus();
+  };
+  disclosureClosers?.forEach(closer => closer.addEventListener('click', closeDisclosure));
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') closeDisclosure();
+  });
+  openDisclosure();
+
   const header = document.querySelector('.site-header');
   const menuButton = document.querySelector('.menu-toggle');
   const nav = document.querySelector('.main-nav');
@@ -27,6 +50,15 @@ document.addEventListener('DOMContentLoaded', () => {
     menuButton.setAttribute('aria-label', isOpen ? 'Close navigation' : 'Open navigation');
   });
   nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => nav.classList.remove('open')));
+
+  const disclaimerToggle = document.querySelector('[data-disclaimer-toggle]');
+  const disclaimerMore = document.querySelector('#disclaimer-more');
+  disclaimerToggle?.addEventListener('click', () => {
+    const isExpanded = disclaimerToggle.getAttribute('aria-expanded') === 'true';
+    disclaimerToggle.setAttribute('aria-expanded', String(!isExpanded));
+    disclaimerMore.hidden = isExpanded;
+    disclaimerToggle.innerHTML = isExpanded ? 'Read More <b aria-hidden="true">→</b>' : 'Read Less <b aria-hidden="true">↑</b>';
+  });
 
   const observer = new IntersectionObserver(entries => entries.forEach(entry => {
     if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
@@ -43,16 +75,26 @@ document.addEventListener('DOMContentLoaded', () => {
     if (willOpen) { item.classList.add('active'); button.setAttribute('aria-expanded', 'true'); }
   }));
 
-  const track = document.querySelector('.testimonial-track');
-  const dots = [...document.querySelectorAll('.carousel-dots button')];
-  const carousel = document.querySelector('.carousel');
-  let index = 0, timer;
-  const showSlide = next => { index = (next + dots.length) % dots.length; track.style.transform = `translateX(-${index * 100}%)`; dots.forEach((dot, i) => dot.classList.toggle('active', i === index)); };
-  const start = () => { timer = setInterval(() => showSlide(index + 1), 4000); };
-  dots.forEach((dot, i) => dot.addEventListener('click', () => { showSlide(i); clearInterval(timer); start(); }));
-  carousel.addEventListener('mouseenter', () => clearInterval(timer));
-  carousel.addEventListener('mouseleave', start);
-  start();
+  const marquee = document.querySelector('.comment-marquee');
+  const marqueeTrack = marquee?.querySelector('.comment-marquee__track');
+  let marqueeRateFrame;
+  const easeMarqueeRate = targetRate => {
+    const animation = marqueeTrack?.getAnimations().find(item => item.animationName === 'comment-marquee');
+    if (!animation) return;
+    cancelAnimationFrame(marqueeRateFrame);
+    const initialRate = animation.playbackRate || 1;
+    const startedAt = performance.now();
+    const duration = 420;
+    const updateRate = now => {
+      const progress = Math.min((now - startedAt) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      animation.playbackRate = initialRate + (targetRate - initialRate) * eased;
+      if (progress < 1) marqueeRateFrame = requestAnimationFrame(updateRate);
+    };
+    marqueeRateFrame = requestAnimationFrame(updateRate);
+  };
+  marquee?.addEventListener('pointerenter', () => easeMarqueeRate(0.62));
+  marquee?.addEventListener('pointerleave', () => easeMarqueeRate(1));
 
   document.querySelector('.newsletter-form').addEventListener('submit', event => {
     event.preventDefault();
