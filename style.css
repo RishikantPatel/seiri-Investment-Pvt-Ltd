@@ -2730,9 +2730,6 @@ body.light-mode .disclosure-modal__close {
   animation: client-proof-drift 80s linear infinite; 
   width: fit-content;
 }
-.client-image-showcase:hover .client-image-grid { 
-  animation-duration: 140s;
-}
 .client-image-card { 
   flex: 0 0 260px; 
   width: 260px; 
@@ -2744,17 +2741,20 @@ body.light-mode .disclosure-modal__close {
   border-radius: 16px; 
   background: var(--surface);
   box-shadow: 0 12px 28px rgba(0, 0, 0, .18); 
-  transition: all .7s cubic-bezier(0.23, 1, 0.32, 1);
+  transition:
+    transform .42s cubic-bezier(.22, 1, .36, 1),
+    border-color .28s ease,
+    background-color .28s ease,
+    box-shadow .42s cubic-bezier(.22, 1, .36, 1);
   cursor: pointer;
   will-change: transform;
 }
 .client-image-card:hover { 
-  transform: translateX(12px) translateY(-6px) scale(1.05); 
+  transform: translateY(-6px) scale(1.05); 
   border-color: var(--accent); 
   background: var(--surface-2); 
   box-shadow: 0 20px 48px rgba(196, 98, 45, .32); 
   z-index: 10;
-  transition: all .7s cubic-bezier(0.23, 1, 0.32, 1);
 }
 .client-image-card__slot,
 .client-image-card img { 
@@ -2767,12 +2767,11 @@ body.light-mode .disclosure-modal__close {
   padding: 16px; 
   object-fit: contain; 
   object-position: center; 
-  transition: transform .7s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: transform .42s cubic-bezier(.22, 1, .36, 1);
   will-change: transform;
 }
 .client-image-card:hover img {
   transform: scale(0.98);
-  transition: transform .7s cubic-bezier(0.23, 1, 0.32, 1);
 }
 .client-image-card:has(img) { background: var(--surface); }
 
@@ -2797,9 +2796,8 @@ body.light-mode .client-image-card__slot { background: #fafafa; }
 
 @media (max-width: 900px) { 
   .client-image-grid { gap: 6px; animation-duration: 70s; } 
-  .client-image-showcase:hover .client-image-grid { animation-duration: 120s; }
   .client-image-card { flex-basis: 220px; width: 220px; height: 360px; } 
-  .client-image-card:hover { transform: translateX(10px) translateY(-5px) scale(1.04); }
+  .client-image-card:hover { transform: translateY(-5px) scale(1.04); }
   .client-image-card img { padding: 14px; }
   @keyframes client-proof-drift { 
     0% { transform: translateX(0); } 
@@ -2811,14 +2809,13 @@ body.light-mode .client-image-card__slot { background: #fafafa; }
   .testimonials { padding-bottom: 16px; } 
   .client-image-showcase { padding-bottom: 70px; } 
   .client-image-grid { gap: 5px; animation-duration: 60s; } 
-  .client-image-showcase:hover .client-image-grid { animation-duration: 100s; }
   .client-image-card { 
     flex-basis: 180px; 
     width: 180px; 
     height: 300px; 
     border-radius: 12px; 
   } 
-  .client-image-card:hover { transform: translateX(8px) translateY(-4px) scale(1.03); }
+  .client-image-card:hover { transform: translateY(-4px) scale(1.03); }
   .client-image-card img { padding: 12px; } 
   @keyframes client-proof-drift { 
     0% { transform: translateX(0); } 

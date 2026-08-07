@@ -100,6 +100,27 @@ document.addEventListener('DOMContentLoaded', () => {
   marquee?.addEventListener('pointerenter', () => easeMarqueeRate(0.62));
   marquee?.addEventListener('pointerleave', () => easeMarqueeRate(1));
 
+  const clientShowcase = document.querySelector('.client-image-showcase');
+  const clientProofGrid = clientShowcase?.querySelector('.client-image-grid');
+  let clientProofRateFrame;
+  const easeClientProofRate = targetRate => {
+    const animation = clientProofGrid?.getAnimations().find(item => item.animationName === 'client-proof-drift');
+    if (!animation) return;
+    cancelAnimationFrame(clientProofRateFrame);
+    const initialRate = animation.playbackRate || 1;
+    const startedAt = performance.now();
+    const duration = 360;
+    const updateRate = now => {
+      const progress = Math.min((now - startedAt) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      animation.playbackRate = initialRate + (targetRate - initialRate) * eased;
+      if (progress < 1) clientProofRateFrame = requestAnimationFrame(updateRate);
+    };
+    clientProofRateFrame = requestAnimationFrame(updateRate);
+  };
+  clientShowcase?.addEventListener('pointerenter', () => easeClientProofRate(0.62));
+  clientShowcase?.addEventListener('pointerleave', () => easeClientProofRate(1));
+
   document.querySelector('.newsletter-form').addEventListener('submit', event => {
     event.preventDefault();
     const message = document.querySelector('.form-message');
