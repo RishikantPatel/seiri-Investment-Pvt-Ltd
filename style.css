@@ -2500,12 +2500,18 @@ body.light-mode .hero-image-placeholder.image-slot {
   display: inline-flex !important;
   align-items: center;
   width: fit-content;
-  padding: 5px 8px;
-  border: 1px solid rgba(255, 158, 86, .52);
+  padding: 7px 11px;
+  border: 1px solid var(--accent);
   border-radius: 7px;
-  background: rgba(196, 98, 45, .18);
-  color: #ffb276 !important;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  color: var(--accent) !important;
+  font-size: 11px;
+  letter-spacing: .14em;
   box-shadow: inset 0 1px rgba(255, 255, 255, .1), 0 4px 13px rgba(0, 0, 0, .18);
+}
+.hero-kicker-label {
+  display: block;
+  margin-bottom: 7px;
 }
 body.light-mode .disclosure-modal__panel {
   border-color: rgba(196, 98, 45, .38);
@@ -2515,7 +2521,7 @@ body.light-mode .disclosure-modal__panel {
 }
 body.light-mode .disclosure-modal__monogram { border-color: rgba(196, 98, 45, .35); background: #fff1e8; color: #c4622d; }
 body.light-mode .disclosure-modal__heading p { color: #c4622d; }
-body.light-mode .registration-number { border-color: rgba(196, 98, 45, .4); background: #fff0e6; color: #a94318 !important; }
+body.light-mode .registration-number { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, transparent); color: var(--accent) !important; }
 body.light-mode .site-header .brand,
 body.light-mode .site-header .brand:hover { color: #1b120e; }
 body.light-mode .hero-copy .hero-kicker,
